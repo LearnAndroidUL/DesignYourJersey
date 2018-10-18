@@ -32,7 +32,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        mJersey = new Jersey("Android",17, Jersey.JerseyColor.GREEN);
+        mJersey = new Jersey(getString(R.string.name_default),
+                                        Integer.parseInt(getString(R.string.number_default)),
+                                        Jersey.JerseyColor.GREEN);
     }
 
     @Override
