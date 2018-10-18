@@ -9,15 +9,15 @@ import java.util.GregorianCalendar;
  * Created by Istvan Orosz on 18 Oct 2018
  */
 public class Jersey {
-    public enum JerseyColor {GREEN,PURPLE};
+    public enum JerseyColor {UNDEFINED,GREEN,PURPLE};
     private String mName;
     private int mNumber;
     private JerseyColor mColor;
 
     public Jersey() {
-        mName = "Android";
-        mNumber = 17;
-        mColor = JerseyColor.GREEN;
+        mName = "";
+        mNumber = 0;
+        mColor = JerseyColor.UNDEFINED;
     }
 
     public Jersey(String name, int quantity, JerseyColor color) {
