@@ -1,12 +1,13 @@
 <resources>
-    <string name="app_name">Design Your Jersey</string>
+    <string name="app_name">Jersey</string>
     <string name="jersey_picture">Jersey picture</string>
     <string name="action_settings">Settings</string>
     <string name="action_edit">Edit</string>
+    <string name="action_reset">RESET</string>
     <string name="jersey_name_default">Android</string>
     <string name="jersey_number_default">17</string>
-    <string name="jersey_title_dialog">Change appearance</string>
-    <string name="jersey_name_dialog">Name:</string>
-    <string name="jersey_number_dialog">Number:</string>
-    <string name="jersey_image_dialog">Color:</string>
+    <string name="jersey_title_dialog">Update Jersey Info</string>
+    <string name="jersey_name_dialog">Name</string>
+    <string name="jersey_number_dialog">Number</string>
+    <string name="jersey_color_dialog">Color</string>
 </resources>

@@ -27,9 +27,9 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/jersey_image_dialog" />
+        android:text="@string/jersey_color_dialog" />
     <ImageButton
-        android:id="@+id/jersey_image_dialog"
+        android:id="@+id/jersey_color_dialog"
         android:layout_width="80dp"
         android:layout_height="36dp"
         android:src="@drawable/jersey_blue"

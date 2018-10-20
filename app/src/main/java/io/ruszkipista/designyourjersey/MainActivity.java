@@ -85,35 +85,48 @@ public class MainActivity extends AppCompatActivity {
 //      grab view handles
         final EditText nameEditTextView = view.findViewById(R.id.jersey_name_dialog);
         final EditText numberEditTextView = view.findViewById(R.id.jersey_number_dialog);
-        final ImageButton colorEditImageButtonView = view.findViewById(R.id.jersey_image_dialog);
+        final ImageButton colorEditImageButtonView = view.findViewById(R.id.jersey_color_dialog);
 
 //      set view parts with current attribute values
         mButtonColorResourceId = mJerseyColorResourceId;
         nameEditTextView.setText(mJersey.getName());
         numberEditTextView.setText(Integer.toString(mJersey.getNumber()));
+//      set button color
         colorEditImageButtonView.setImageResource(jerseyImageResourceIds[mButtonColorResourceId]);
+//      setup color button click listener
         colorEditImageButtonView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mButtonColorResourceId = (mButtonColorResourceId + 1) % 4;
+//              circular increment of image resource index
+                mButtonColorResourceId = (mButtonColorResourceId++) % jerseyImageResourceIds.length;
                 colorEditImageButtonView.setImageResource(jerseyImageResourceIds[mButtonColorResourceId]);
             }
         });
 
 //      set dialog Title
         builder.setTitle(R.string.jersey_title_dialog);
+//      set OK button click listener
         builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 //              read dialog new attribute values and set on Jersey
                 mJersey.setName(nameEditTextView.getText().toString());
-                mJersey.setNumber(Integer.parseInt(numberEditTextView.getText().toString()));
+//              read new number, handle conversion exception
+                int numberEntered;
+                try {numberEntered = Integer.parseInt(numberEditTextView.getText().toString());}
+                catch (NumberFormatException e) {numberEntered = 0}
+                mJersey.setNumber(numberEntered);
+//              get new image resource pointer (color)
                 mJerseyColorResourceId = mButtonColorResourceId;
+//              update image resource pointer (color)
                 mJersey.setPictureResourceId(jerseyImageResourceIds[mJerseyColorResourceId]);
+
                 showJersey();
             }
         });
+//      set CANCEL button click listener
         builder.setNegativeButton(android.R.string.cancel,null);
+//      show dialog
         builder.create().show();
     }
     private void showJersey(){
