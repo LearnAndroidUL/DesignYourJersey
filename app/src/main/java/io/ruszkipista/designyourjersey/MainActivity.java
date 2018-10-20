@@ -32,8 +32,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        mJersey = new Jersey(getString(R.string.name_default),
-                                        Integer.parseInt(getString(R.string.number_default)),
+        mJersey = new Jersey(getString(R.string.jersey_name_default),
+                                        Integer.parseInt(getString(R.string.jersey_number_default)),
                                         Jersey.JerseyColor.GREEN);
     }
 
