@@ -5,7 +5,8 @@
     <string name="action_edit">Edit</string>
     <string name="jersey_name_default">Android</string>
     <string name="jersey_number_default">17</string>
-    <string name="jersey_name_dialog">Name</string>
-    <string name="jersey_number_dialog">Number</string>
-    <string name="jersey_image_dialog">Change color to:</string>
+    <string name="jersey_title_dialog">Change appearance</string>
+    <string name="jersey_name_dialog">Name:</string>
+    <string name="jersey_number_dialog">Number:</string>
+    <string name="jersey_image_dialog">Color:</string>
 </resources>
