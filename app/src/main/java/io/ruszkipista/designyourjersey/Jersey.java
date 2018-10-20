@@ -9,21 +9,20 @@ import java.util.GregorianCalendar;
  * Created by Istvan Orosz on 18 Oct 2018
  */
 public class Jersey {
-    public enum JerseyColor {UNDEFINED,GREEN,PURPLE};
     private String mName;
     private int mNumber;
-    private JerseyColor mColor;
+    private int mImageResourceId;
 
     public Jersey() {
         mName = "";
         mNumber = 0;
-        mColor = JerseyColor.UNDEFINED;
+        mImageResourceId = 0;
     }
 
-    public Jersey(String name, int quantity, JerseyColor color) {
+    public Jersey(String name, int quantity, int imageResourceId) {
         mName = name;
         mNumber = quantity;
-        mColor = color;
+        mImageResourceId = imageResourceId;
     }
 
     public String getName() {
@@ -40,9 +39,7 @@ public class Jersey {
 
     public void setNumber(int number) { mNumber = number;}
 
-    public String getColorString() {return mColor.toString(); }
+    public int getImageResourceId() {return mImageResourceId;}
 
-    public void setColor(JerseyColor color) {
-        mColor = color;
-    }
+    public void setPictureResourceId(int imageResourceId) {mImageResourceId = imageResourceId;}
 }

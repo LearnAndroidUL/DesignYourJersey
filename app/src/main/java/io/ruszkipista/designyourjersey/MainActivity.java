@@ -10,10 +10,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
-    private TextView mNameTextView, mNumberTextView, mColorTextView;
+    private TextView mJerseyNameTextView, mJerseyNumberTextView;
+    private ImageView mJerseyImageView;
     private Jersey mJersey;
 
     @Override
@@ -32,9 +34,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+//      grab text views of item details
+        mJerseyNameTextView = findViewById(R.id.jersey_name);
+        mJerseyNumberTextView = findViewById(R.id.jersey_number);
+        mJerseyImageView = findViewById(R.id.jersey_image);
+
         mJersey = new Jersey(getString(R.string.jersey_name_default),
                                         Integer.parseInt(getString(R.string.jersey_number_default)),
-                                        Jersey.JerseyColor.GREEN);
+                                        R.drawable.jersey_green);
+        showJersey();
     }
 
     @Override
@@ -63,5 +71,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void editJersey() {
 
+    }
+
+    private void showJersey(){
+        mJerseyNameTextView.setText(mJersey.getName());
+        mJerseyNumberTextView.setText(mJersey.getNumber());
+        mJerseyImageView.setImageResource(mJersey.getImageResourceId());
     }
 }
