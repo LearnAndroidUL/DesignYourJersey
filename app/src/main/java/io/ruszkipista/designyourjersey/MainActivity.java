@@ -21,10 +21,10 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity {
     private TextView mJerseyNameTextView, mJerseyNumberTextView;
     private ImageView mJerseyImageView;
-    private int mJerseyColorResourceId = 0;
-    private int mButtonColorResourceId;
+    private int mJerseyColorResourceIndex;
+    private int mButtonColorResourceIndex;
     private Jersey mJersey;
-    private int[] jerseyImageResourceIds = {R.drawable.jersey_green,R.drawable.jersey_purple,
+    private int[] mJerseyImageResourceIds = {R.drawable.jersey_green,R.drawable.jersey_purple,
                                     R.drawable.jersey_blue,R.drawable.jersey_red};
 
 //  constants for Persistence:
@@ -58,7 +58,8 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
         mJersey.setName(prefs.getString(KEY_JERSEY_NAME,getString(R.string.jersey_name_default)));
         mJersey.setNumber(prefs.getInt(KEY_JERSEY_NUMBER,Integer.parseInt(getString(R.string.jersey_number_default))));
-        mJersey.setPictureResourceId(prefs.getInt(KEY_JERSEY_COLOR,Integer.parseInt(getString(R.string.jersey_number_default))));
+        mJerseyColorResourceIndex = prefs.getInt(KEY_JERSEY_COLOR,0);
+        mJersey.setPictureResourceId(mJerseyImageResourceIds[mJerseyColorResourceIndex]);
         showJersey();
     }
 
@@ -72,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
 //      put attributes into the editor
         editor.putString(KEY_JERSEY_NAME, mJersey.getName());
         editor.putInt(KEY_JERSEY_NUMBER, mJersey.getNumber());
-        editor.putInt(KEY_JERSEY_COLOR, mJersey.getImageResourceId());
+        editor.putInt(KEY_JERSEY_COLOR, mJerseyColorResourceIndex);
 //      save editor content
         editor.commit();
     }
@@ -130,18 +131,18 @@ public class MainActivity extends AppCompatActivity {
         final ImageButton colorEditImageButtonView = view.findViewById(R.id.jersey_color_dialog);
 
 //      set view parts with current attribute values
-        mButtonColorResourceId = mJerseyColorResourceId;
+        mButtonColorResourceIndex = mJerseyColorResourceIndex;
         nameEditTextView.setText(mJersey.getName());
         numberEditTextView.setText(Integer.toString(mJersey.getNumber()));
 //      set button color
-        colorEditImageButtonView.setImageResource(jerseyImageResourceIds[mButtonColorResourceId]);
+        colorEditImageButtonView.setImageResource(mJerseyImageResourceIds[mButtonColorResourceIndex]);
 //      setup color button click listener
         colorEditImageButtonView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //              circular increment of image resource index
-                mButtonColorResourceId = (mButtonColorResourceId + 1) % jerseyImageResourceIds.length;
-                colorEditImageButtonView.setImageResource(jerseyImageResourceIds[mButtonColorResourceId]);
+                mButtonColorResourceIndex = (mButtonColorResourceIndex + 1) % mJerseyImageResourceIds.length;
+                colorEditImageButtonView.setImageResource(mJerseyImageResourceIds[mButtonColorResourceIndex]);
             }
         });
 
@@ -159,9 +160,9 @@ public class MainActivity extends AppCompatActivity {
                 catch (NumberFormatException e) {numberEntered = 0;}
                 mJersey.setNumber(numberEntered);
 //              get new image resource pointer (color)
-                mJerseyColorResourceId = mButtonColorResourceId;
+                mJerseyColorResourceIndex = mButtonColorResourceIndex;
 //              update image resource pointer (color)
-                mJersey.setPictureResourceId(jerseyImageResourceIds[mJerseyColorResourceId]);
+                mJersey.setPictureResourceId(mJerseyImageResourceIds[mJerseyColorResourceIndex]);
 
                 showJersey();
             }
@@ -175,8 +176,8 @@ public class MainActivity extends AppCompatActivity {
     private void initJersey() {
         mJersey.setName(getString(R.string.jersey_name_default));
         mJersey.setNumber(Integer.parseInt(getString(R.string.jersey_number_default)));
-        mJerseyColorResourceId = 0;
-        mJersey.setPictureResourceId(jerseyImageResourceIds[mJerseyColorResourceId]);
+        mJerseyColorResourceIndex = 0;
+        mJersey.setPictureResourceId(mJerseyImageResourceIds[mJerseyColorResourceIndex]);
     }
 
     private void resetJersey() {
