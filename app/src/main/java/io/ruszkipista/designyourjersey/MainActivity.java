@@ -17,6 +17,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView mJerseyNameTextView, mJerseyNumberTextView;
     private ImageView mJerseyImageView;
     private Jersey mJersey;
+    private int[] jerseyImageResourceIds = {R.drawable.jersey_green,R.drawable.jersey_purple,
+                                    R.drawable.jersey_blue,R.drawable.jersey_red};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,9 +41,7 @@ public class MainActivity extends AppCompatActivity {
         mJerseyNumberTextView = findViewById(R.id.jersey_number);
         mJerseyImageView = findViewById(R.id.jersey_image);
 
-        mJersey = new Jersey(getString(R.string.jersey_name_default),
-                                        Integer.parseInt(getString(R.string.jersey_number_default)),
-                                        R.drawable.jersey_green);
+        mJersey = new Jersey(getString(R.string.jersey_name_default), Integer.parseInt(getString(R.string.jersey_number_default)), jerseyImageResourceIds[0]);
         showJersey();
     }
 
@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void showJersey(){
         mJerseyNameTextView.setText(mJersey.getName());
-        mJerseyNumberTextView.setText(mJersey.getNumber());
+        mJerseyNumberTextView.setText(Integer.toString(mJersey.getNumber()));
         mJerseyImageView.setImageResource(mJersey.getImageResourceId());
     }
 }

@@ -13,31 +13,30 @@
 
     <ImageView
         android:id="@+id/jersey_image"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:contentDescription="@string/jersey_picture"
-        android:src="@drawable/jersey_green" />
+        android:gravity="center"
+        android:src="@drawable/jersey_blue" />
 
     <TextView
         android:id="@+id/jersey_name"
+        android:text="Name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="162dp"
-        android:textSize="@dimen/label_name"
-        android:text="@string/jersey_name_default" />
+        android:layout_alignLeft="@id/jersey_image"
+        android:layout_alignRight="@id/jersey_image"
+        android:layout_marginTop="140dp"
+        android:gravity="center_horizontal"
+        android:textSize="@dimen/label_name" />
 
     <TextView
         android:id="@+id/jersey_number"
+        android:text="99"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_below="@id/jersey_name"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="222dp"
-        android:textSize="@dimen/label_number"
-        android:text="@string/jersey_number_default" />
+        android:textSize="@dimen/label_number" />
 
 </RelativeLayout>
