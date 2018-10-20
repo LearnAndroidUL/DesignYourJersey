@@ -2,13 +2,13 @@ package io.ruszkipista.designyourjersey;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.view.Menu;
@@ -27,6 +27,13 @@ public class MainActivity extends AppCompatActivity {
     private int[] jerseyImageResourceIds = {R.drawable.jersey_green,R.drawable.jersey_purple,
                                     R.drawable.jersey_blue,R.drawable.jersey_red};
 
+//  constants for Persistence:
+    private final static String PREFS = "PREFS";
+    private static final String KEY_JERSEY_NAME = "KEY_JERSEY_NAME";
+    private static final String KEY_JERSEY_NUMBER = "KEY_JERSEY_NUMBER";
+    private static final String KEY_JERSEY_COLOR = "KEY_JERSEY_COLOR";
+
+//  execution starts here
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,11 +53,28 @@ public class MainActivity extends AppCompatActivity {
         mJerseyNameTextView = findViewById(R.id.jersey_name);
         mJerseyNumberTextView = findViewById(R.id.jersey_number);
         mJerseyImageView = findViewById(R.id.jersey_image);
-
-        mJersey = new Jersey(getString(R.string.jersey_name_default),
-                            Integer.parseInt(getString(R.string.jersey_number_default)),
-                            jerseyImageResourceIds[mJerseyColorResourceId]);
+        mJersey = new Jersey();
+//      read application preferences for stored Jersey attributes
+        SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
+        mJersey.setName(prefs.getString(KEY_JERSEY_NAME,getString(R.string.jersey_name_default)));
+        mJersey.setNumber(prefs.getInt(KEY_JERSEY_NUMBER,Integer.parseInt(getString(R.string.jersey_number_default))));
+        mJersey.setPictureResourceId(prefs.getInt(KEY_JERSEY_COLOR,Integer.parseInt(getString(R.string.jersey_number_default))));
         showJersey();
+    }
+
+//  before object gets destroyed, save Jersey attributes
+    @Override
+    protected void onPause() {
+        super.onPause();
+//      start application preferences editor
+        SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+//      put attributes into the editor
+        editor.putString(KEY_JERSEY_NAME, mJersey.getName());
+        editor.putInt(KEY_JERSEY_NUMBER, mJersey.getNumber());
+        editor.putInt(KEY_JERSEY_COLOR, mJersey.getImageResourceId());
+//      save editor content
+        editor.commit();
     }
 
     @Override
@@ -66,6 +90,10 @@ public class MainActivity extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         switch (menuItem.getItemId()){
+            case R.id.action_options_reset:
+                showDialogReset();
+                return true;
+
             case R.id.action_options_edit:
                 showDialogEditJersey();
                 return true;
@@ -75,6 +103,20 @@ public class MainActivity extends AppCompatActivity {
                 return true;
         };
         return super.onOptionsItemSelected(menuItem);
+    }
+
+    private void showDialogReset() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.action_reset);
+        builder.setMessage(R.string.confirmation_dialog_reset);
+        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                resetJersey();
+            }
+        });
+        builder.setNegativeButton(android.R.string.cancel,null);
+        builder.create().show();
     }
 
     private void showDialogEditJersey() {
@@ -98,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 //              circular increment of image resource index
-                mButtonColorResourceId = (mButtonColorResourceId++) % jerseyImageResourceIds.length;
+                mButtonColorResourceId = (mButtonColorResourceId + 1) % jerseyImageResourceIds.length;
                 colorEditImageButtonView.setImageResource(jerseyImageResourceIds[mButtonColorResourceId]);
             }
         });
@@ -114,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
 //              read new number, handle conversion exception
                 int numberEntered;
                 try {numberEntered = Integer.parseInt(numberEditTextView.getText().toString());}
-                catch (NumberFormatException e) {numberEntered = 0}
+                catch (NumberFormatException e) {numberEntered = 0;}
                 mJersey.setNumber(numberEntered);
 //              get new image resource pointer (color)
                 mJerseyColorResourceId = mButtonColorResourceId;
@@ -129,6 +171,33 @@ public class MainActivity extends AppCompatActivity {
 //      show dialog
         builder.create().show();
     }
+
+    private void initJersey() {
+        mJersey.setName(getString(R.string.jersey_name_default));
+        mJersey.setNumber(Integer.parseInt(getString(R.string.jersey_number_default)));
+        mJerseyColorResourceId = 0;
+        mJersey.setPictureResourceId(jerseyImageResourceIds[mJerseyColorResourceId]);
+    }
+
+    private void resetJersey() {
+        final Jersey mSavedJersey = new Jersey();
+        mSavedJersey.copy(mJersey);
+        initJersey();
+        showJersey();
+
+        Snackbar snackbar = Snackbar.make(findViewById(R.id.coordinator_layout),R.string.confirmation_snack_reset,Snackbar.LENGTH_LONG);
+        snackbar.setAction(R.string.action_undo, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//              restore saved attributes
+                mJersey.copy(mSavedJersey);
+                showJersey();
+                Snackbar.make(findViewById(R.id.coordinator_layout),R.string.confirmation_snack_restored,Snackbar.LENGTH_LONG).show();
+            }
+        });
+        snackbar.show();
+    }
+
     private void showJersey(){
         mJerseyNameTextView.setText(mJersey.getName());
         mJerseyNumberTextView.setText(Integer.toString(mJersey.getNumber()));

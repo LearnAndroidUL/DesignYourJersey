@@ -42,4 +42,10 @@ public class Jersey {
     public int getImageResourceId() {return mImageResourceId;}
 
     public void setPictureResourceId(int imageResourceId) {mImageResourceId = imageResourceId;}
+
+    public void copy(Jersey oldJersey) {
+        this.mName = oldJersey.getName();
+        this.mNumber = oldJersey.getNumber();
+        this.mImageResourceId = oldJersey.getImageResourceId();
+    }
 }
